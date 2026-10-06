@@ -48,7 +48,7 @@ def validate_appointment(pet_id, vet_id, appt_time, reason):
     # --- reason -----------------------------------------------------------
     if not reason.strip():
         errors.append("Reason is required.")
-    elif len(reason) >= MAX_REASON:
+    elif len(reason) > MAX_REASON:
         errors.append(
             "Reason must be %d characters or fewer. You entered %d."
             % (MAX_REASON, len(reason))
