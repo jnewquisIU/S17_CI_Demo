@@ -1,0 +1,33 @@
+<!--
+    vets.html
+    ---------
+    A single-table list, no join. Vet holds everything this page shows, so
+    models.get_all_vets() is one plain SELECT.
+
+    Compare it to appointments.html, which needs four tables to fill its
+    columns. Not every page needs a join.
+-->
+{% extends "base.html" %}
+
+{% block title %}Vets{% endblock %}
+
+{% block content %}
+    <h2>Veterinarians</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Specialty</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vet in vets %}
+            <tr>
+                <td>{{ vet.name }}</td>
+                <td>{{ vet.specialty }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

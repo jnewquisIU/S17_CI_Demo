@@ -1,0 +1,43 @@
+<!doctype html>
+<!--
+    base.html
+    ---------
+    This is the "parent" template. It holds everything every page
+    shares: the <head>, the header/nav bar, and the footer.
+
+    Child templates (about.html, appointments.html, appointment_form.html,
+    vets.html) only fill in the content block below. That is the whole point
+    of template inheritance: write the shared layout once, reuse it everywhere.
+-->
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <!-- child templates set the page title by defining their own title block -->
+    <title>{% block title %}Flask Demo{% endblock %}</title>
+    <!-- url_for builds the /static/style.css URL for us instead of us typing it by hand -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Flask Learning Demo</h1>
+        <nav>
+            <!-- url_for('home') looks up the URL for the view function named "home", and so on -->
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('greeting') }}">Greeting</a>
+            <a href="{{ url_for('about') }}">About This Class</a>
+            <a href="{{ url_for('appointments') }}">Appointments</a>
+            <a href="{{ url_for('vets') }}">Vets</a>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        <!-- Child templates override this block with their own content -->
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>Session 11 Flask Demo: every write checked before it runs</p>
+    </footer>
+</body>
+</html>

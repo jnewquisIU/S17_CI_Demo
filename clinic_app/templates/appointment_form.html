@@ -1,0 +1,84 @@
+<!--
+    appointment_form.html
+    ---------------------
+    One template, used by two routes. /appointments/new renders it with blank
+    values and posts to itself; /appointments/<id>/edit renders it with the
+    stored values already filled in and posts back to itself.
+
+    The route decides which by passing in three variables:
+        heading     the text at the top of the page
+        action_url  where the form posts
+        appointment the values that go in the fields
+
+    Session 11 adds a fourth, errors: a list of sentences from
+    validators.py. When the list is empty nothing is shown. When it is not,
+    the fields still hold whatever was submitted, so nobody has to retype a
+    form because one field was wrong.
+
+    The required and maxlength attributes below are a convenience for the
+    person filling in the form. They are checked by the browser, and a
+    request that never went through a browser never sees them. The rules
+    that decide whether a row is written are in validators.py.
+-->
+{% extends "base.html" %}
+
+{% block title %}{{ heading }}{% endblock %}
+
+{% block content %}
+    <h2>{{ heading }}</h2>
+
+    {% if errors %}
+    <ul class="errors">
+        {% for error in errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <!-- method="post" is what sends the values to the server. Without it the
+         browser uses GET and the form values end up in the URL instead. -->
+    <form method="post" action="{{ action_url }}">
+
+        <p>
+            <label for="pet_id">Pet</label><br>
+            <select name="pet_id" id="pet_id">
+                {% for pet in pets %}
+                <option value="{{ pet.pet_id }}"
+                        {% if pet.pet_id|string == appointment.pet_id|string %}selected{% endif %}>
+                    {{ pet.pet_name }} ({{ pet.owner_name }})
+                </option>
+                {% endfor %}
+            </select>
+        </p>
+
+        <p>
+            <label for="vet_id">Vet</label><br>
+            <select name="vet_id" id="vet_id">
+                {% for vet in vets %}
+                <option value="{{ vet.vet_id }}"
+                        {% if vet.vet_id|string == appointment.vet_id|string %}selected{% endif %}>
+                    {{ vet.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </p>
+
+        <p>
+            <label for="appt_time">Date and time</label><br>
+            <input type="text" name="appt_time" id="appt_time" required
+                   value="{{ appointment.appt_time }}"
+                   size="24" placeholder="2026-09-16 14:00">
+        </p>
+
+        <p>
+            <label for="reason">Reason</label><br>
+            <input type="text" name="reason" id="reason" required maxlength="200"
+                   value="{{ appointment.reason }}" size="40">
+        </p>
+
+        <p>
+            <button type="submit">Save</button>
+            <a href="{{ url_for('appointments') }}">Cancel</a>
+        </p>
+    </form>
+{% endblock %}

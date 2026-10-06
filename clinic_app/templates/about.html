@@ -1,0 +1,40 @@
+<!--
+    about.html
+    ----------
+    A "child" template. It extends base.html, so it automatically gets
+    the header, nav bar, and footer for free, and only needs to define
+    what goes inside the content block.
+
+    This page shows Session 7 concepts: the route passes a plain dict
+    (instructor) and a list of dicts (topics) into the template, and
+    Jinja does the work of turning that Python data into HTML.
+-->
+{% extends "base.html" %}
+
+{% block title %}About This Class{% endblock %}
+
+{% block content %}
+    <h2>About This Class</h2>
+
+    <!-- "instructor" is a single dict passed from the route -->
+    <p>
+        This class is taught by <strong>{{ instructor.name }}</strong>,
+        who has been teaching Flask for {{ instructor.years_teaching }} years.
+    </p>
+
+    <!-- "topics" is a list of dicts; the for-tag below loops over each one,
+         the same way a Python "for topic in topics:" loop would -->
+    <h3>Topics Covered So Far</h3>
+    <ul class="topic-list">
+        {% for topic in topics %}
+            <li>
+                <strong>Session {{ topic.session }}:</strong> {{ topic.title }}.
+                {{ topic.description }}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- the pipe (|) applies a Jinja filter; "length" counts items in the list,
+         same idea as Python's len(topics) -->
+    <p>Total topics covered: {{ topics|length }}</p>
+{% endblock %}

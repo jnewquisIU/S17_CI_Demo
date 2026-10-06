@@ -1,0 +1,57 @@
+<!--
+    appointments.html
+    -----------------
+    Session 10 version. Two things changed from Session 9.
+
+    First, an Add link above the table, pointing at /appointments/new.
+
+    Second, an Actions column. Each row now carries an Edit link and a Delete
+    button, and both need to say which appointment they mean. That is why the
+    query in models.py now also returns appointment_id.
+
+    The Delete button sits inside its own small form with method="post",
+    rather than being a link. A link is a GET, and a browser will follow a GET
+    on its own while prefetching. Deleting a row should take a deliberate
+    press.
+-->
+{% extends "base.html" %}
+
+{% block title %}Appointments{% endblock %}
+
+{% block content %}
+    <h2>Upcoming Appointments</h2>
+
+    <p><a href="{{ url_for('new_appointment') }}">Add an appointment</a></p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>Pet</th>
+                <th>Owner</th>
+                <th>Vet</th>
+                <th>Reason</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appt in appointments %}
+            <tr>
+                <td>{{ appt.appt_time }}</td>
+                <td>{{ appt.pet_name }} ({{ appt.species }})</td>
+                <td>{{ appt.owner_name }}</td>
+                <td>{{ appt.vet_name }}</td>
+                <td>{{ appt.reason }}</td>
+                <td>
+                    <a href="{{ url_for('edit_appointment', appointment_id=appt.appointment_id) }}">Edit</a>
+                    <form method="post"
+                          action="{{ url_for('delete_appointment', appointment_id=appt.appointment_id) }}"
+                          style="display:inline;">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,25 @@
+name: tests
+
+# Run the tests every time someone pushes a change or opens a pull request.
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v7
+
+      - name: Install Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install the packages the app needs
+        run: pip install -r requirements.txt
+
+      - name: Run the tests
+        run: python -m pytest
+        working-directory: clinic_app
