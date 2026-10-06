@@ -54,6 +54,7 @@ app = Flask(__name__)
 # rendered through Jinja, it is just a Python string being returned.
 # ---------------------------------------------------------------------------
 @app.route("/")
+@app.route("/home")
 def home():
     """Home page. Returns one HTML string. No template and no database."""
     html = """
